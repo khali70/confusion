@@ -1,76 +1,49 @@
-import React, { Component } from "react";
-import { Media } from "reactstrap";
+import React, { useState } from "react";
+import { Media, Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 
-export default class menuComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes: [
-        {
-          id: 0,
-          name: "Uthappizza",
-          image: "assets/images/uthappizza.png",
-          category: "mains",
-          label: "Hot",
-          price: "4.99",
-          description:
-            "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
-        },
-        {
-          id: 1,
-          name: "Zucchipakoda",
-          image: "assets/images/zucchipakoda.png",
-          category: "appetizer",
-          label: "",
-          price: "1.99",
-          description:
-            "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce",
-        },
-        {
-          id: 2,
-          name: "Vadonut",
-          image: "assets/images/vadonut.png",
-          category: "appetizer",
-          label: "New",
-          price: "1.99",
-          description:
-            "A quintessential ConFusion experience, is it a vada or is it a donut?",
-        },
-        {
-          id: 3,
-          name: "ElaiCheese Cake",
-          image: "assets/images/elaicheesecake.png",
-          category: "dessert",
-          label: "",
-          price: "2.99",
-          description:
-            "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms",
-        },
-      ],
-    };
-  }
-  render() {
-    const menu = this.state.dishes.map((dish) => {
+export default ({ dishes }) => {
+  const [selectedDish, setselectedDish] = useState(() => null);
+  const selectDish = (dish) => {
+    setselectedDish({ selectedDish: dish });
+  };
+  const menu = dishes.map((dish) => {
+    return (
+      <div className="col-12 col-md-3 my-1" key={dish.id}>
+        <Card onClick={() => selectDish(dish)}>
+          <CardImg width="100%" object src={dish.image} alt={dish.name} />
+          <CardImgOverlay>
+            <CardTitle> {dish.name}</CardTitle>
+          </CardImgOverlay>
+        </Card>
+      </div>
+    );
+  });
+  const dishinfo = (info) => {
+    if (info != null) {
+      const { selectedDish: dish } = info;
       return (
-        <div className="col-12 mt-5" key={dish.id}>
+        <Media list className="p-0">
           <Media tag="li">
             <Media left middle>
               <Media object src={dish.image} alt={dish.name} />
             </Media>
             <Media body className="ml-5">
-              <Media heading> {dish.name}</Media>
+              <Media heading>{dish.name}</Media>
               <p>{dish.description}</p>
             </Media>
           </Media>
-        </div>
+        </Media>
       );
-    });
-    return (
-      <div className="container">
-        <div className="row">
-          <Media list>{menu}</Media>
-        </div>
+    } else {
+      return <div></div>;
+    }
+  };
+  return (
+    <div className="container">
+      <div className="row  justify-content-center">{menu}</div>
+      <div className="row justify-content-center ">
+        <div className=" col-12">{dishinfo(selectedDish)}</div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
