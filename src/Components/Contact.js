@@ -9,6 +9,7 @@ import {
   Label,
   Input,
   Col,
+  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 const Contact = () => {
@@ -21,6 +22,15 @@ const Contact = () => {
       agree: false,
       contactType: "Tel.",
       message: "",
+      touched: {
+        firstname: false,
+        lastname: false,
+        telnum: false,
+        email: false,
+        agree: false,
+        contactType: false,
+        message: false,
+      },
     };
   });
   const handleInputChange = (e) => {
@@ -39,6 +49,29 @@ const Contact = () => {
     console.log("Current State is: " + JSON.stringify(data));
     alert("Current State is: " + JSON.stringify(data));
   };
+  /*
+  const hanfelBlur = (field) => (e) => {
+    setData({
+      ...data,
+      touched: { ...data.touched, [field]: true },
+    });
+  };
+
+  const Validate = (firstname, lastname, telnum, email) => {
+    const error = {
+      firstname: "",
+      lastname: "",
+      telnum: "",
+      email: "",
+      agree: false,
+      contactType: "Tel.",
+      message: "",
+    };
+    const reg = /^\d+$/;
+    if (data.touched.telnum && !reg.test(telnum)) {
+      error.telnum = "tel Number must be only numbers";
+    }
+  };*/
   return (
     <div className="container">
       <div className="row">
