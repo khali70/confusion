@@ -9,7 +9,6 @@ import {
   Label,
   Input,
   Col,
-  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 const Contact = () => {
