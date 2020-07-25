@@ -1,44 +1,29 @@
-import React, { Component } from "react";
-import "./App.css";
-import { Navbar, NavbarBrand } from "reactstrap";
+import React, { useState } from "react";
 import { DISHES } from "./shared/Dishes";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 // Components
 import Menu from "./Components/menuComponent";
+import Home from "./Components/Home";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import NotFound from "./Components/Notfound";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes: [...DISHES],
-    };
-    console.log("constructor");
-    console.log("----------------------");
-  }
-  componentDidMount() {
-    console.log("componentDidMount");
-    console.log("----------------------");
-  }
-  componentDidUpdate() {
-    console.log("componentDidUpdate");
-    console.log("----------------------");
-  }
-  componentDidCatch() {
-    console.log("componentDidCatch");
-    console.log("----------------------");
-  }
-
-  render() {
-    return (
+function App() {
+  const [dishes] = useState(() => [...DISHES]);
+  return (
+    <BrowserRouter>
       <div>
-        <Navbar dark color="primary">
-          <div className="container">
-            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-          </div>
-        </Navbar>
-        <Menu dishes={this.state.dishes} />
+        <Header />
+        <Switch>
+          <Route exact path="/home" component={() => <Home />} />
+          <Route path="/menu" component={() => <Menu dishes={dishes} />} />
+          {/* <Redirect path="/" component={() => <NotFound />} /> */}
+          <Route component={() => <NotFound />} />
+        </Switch>
+        <Footer />
       </div>
-    );
-  }
+    </BrowserRouter>
+  );
 }
 
 export default App;

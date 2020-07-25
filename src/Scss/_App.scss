@@ -1,0 +1,43 @@
+$bg-light: #d1c4e9;
+$bg-light-tr: #d1c4e991;
+$bg-midum: #9575cd !important;
+$bg-dark: #512da8;
+//font color
+$black: #0f0f0f;
+$white: floralwhite;
+.row-header {
+  margin: 0px auto;
+  padding: 0px auto;
+}
+
+.row-content {
+  margin: 0px auto;
+  padding: 50px 0px 50px 0px;
+  border-bottom: 1px ridge;
+  min-height: 400px;
+}
+
+.footer {
+  background-color: $bg-light;
+  margin: 0px auto;
+  padding: 20px 0px 20px 0px;
+}
+.jumbotron {
+  padding: 70px 30px 70px 30px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  margin: 0px auto;
+  background: $bg-midum;
+  color: $white;
+}
+
+address {
+  font-size: 80%;
+  margin: 0px;
+  color: $black;
+}
+
+.navbar-dark {
+  background-color: $bg-dark;
+}
+@import "./Footer";
