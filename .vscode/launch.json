@@ -6,16 +6,16 @@
   "configurations": [
     {
       "type": "firefox",
-      "request": "attach",
-      "name": "Attach firefox",
-      "url": "http://localhost:6000",
+      "request": "launch",
+      "reAttach": true,
+      "name": "firfox localhost",
+      "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     },
-
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Chrome localhost",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     }

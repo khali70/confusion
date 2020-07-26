@@ -8,6 +8,24 @@ export const initialState = {
   comments: COMMENTS,
   promotions: PROMOTIONS,
   leaders: LEADERS,
+  Form: {
+    firstname: "",
+    lastname: "",
+    telnum: "",
+    email: "",
+    agree: false,
+    contactType: "Tel.",
+    message: "",
+    touched: {
+      firstname: false,
+      lastname: false,
+      telnum: false,
+      email: false,
+      agree: false,
+      contactType: false,
+      message: false,
+    },
+  },
 };
 
 export const Reducer = (state = initialState, action) => {
