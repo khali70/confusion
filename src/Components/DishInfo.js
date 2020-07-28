@@ -9,6 +9,7 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import DishdetailComponent from "./DishdetailComponent";
 
 class DishInfo extends Component {
   render() {
@@ -58,6 +59,7 @@ class DishInfo extends Component {
                   </p>
                 </div>
               ))}
+              <DishdetailComponent />
             </div>
           </div>
         </div>

@@ -4,17 +4,20 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Form,
-  FormGroup,
   Label,
-  Input,
   Col,
   Row,
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-const Contact = ({ data }) => {
+const required = (val) => val && val.length;
+const MaxLength = (len) => (val) => !val || val.length <= len;
+const MinLength = (len) => (val) => val && val.length >= len;
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const Contact = () => {
   const handleSubmit = (values) => {
     console.log("Current State is: " + JSON.stringify(values));
     alert("Current State is: " + JSON.stringify(values));
@@ -81,6 +84,21 @@ const Contact = ({ data }) => {
                   name="firstname"
                   placeholder="First Name"
                   className="form-control"
+                  validators={{
+                    required,
+                    minLength: MinLength(3),
+                    maxLength: MaxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".firstname"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
                 />
               </Col>
             </Row>
@@ -95,6 +113,21 @@ const Contact = ({ data }) => {
                   name="lastname"
                   placeholder="Last Name"
                   className="form-control"
+                  validators={{
+                    required,
+                    minLength: MinLength(3),
+                    maxLength: MaxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".lastname"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
                 />
               </Col>
             </Row>
@@ -109,6 +142,23 @@ const Contact = ({ data }) => {
                   name="telnum"
                   placeholder="Tel. Number"
                   className="form-control"
+                  validators={{
+                    required,
+                    minLength: MinLength(3),
+                    maxLength: MaxLength(15),
+                    isNumber,
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".telnum"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 numbers",
+                    maxLength: "Must be 15 numbers or less",
+                    isNumber: "Must be a number",
+                  }}
                 />
               </Col>
             </Row>
@@ -123,6 +173,19 @@ const Contact = ({ data }) => {
                   name="email"
                   placeholder="Email"
                   className="form-control"
+                  validators={{
+                    required,
+                    validEmail,
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".email"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    validEmail: "Invalid Email Address",
+                  }}
                 />
               </Col>
             </Row>
@@ -178,6 +241,6 @@ const Contact = ({ data }) => {
   );
 };
 const MapStateToProps = (state) => {
-  return { data: state.Form };
+  return {};
 };
 export default connect(MapStateToProps, null)(Contact);
