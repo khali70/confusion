@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 // Components
@@ -9,9 +9,18 @@ import Menu from "./Components/menuComponent";
 import Contact from "./Components/Contact";
 import Footer from "./Components/Footer";
 import DishInfo from "./Components/DishInfo";
+import { fetchDishes } from "./Redux/Actions";
 // import NotFound from "./Components/Notfound";
 
-function App({ dishes, comments, promotions, leaders }) {
+function App({
+  dishes,
+  comments,
+  promotions,
+  leaders,
+  fetchDishes,
+  loading,
+  err,
+}) {
   const DishwithID = ({ match }) => {
     return (
       <DishInfo
@@ -24,10 +33,14 @@ function App({ dishes, comments, promotions, leaders }) {
         comments={comments.filter(
           (comment) => comment.dishId === parseInt(match.params.dishId, 10)
         )}
+        loading={loading}
+        err={err}
       />
     );
   };
-
+  useEffect(() => {
+    fetchDishes();
+  }, []);
   return (
     <BrowserRouter>
       <div>
@@ -40,6 +53,8 @@ function App({ dishes, comments, promotions, leaders }) {
                 dish={dishes.filter((dish) => dish.featured)[0]}
                 promotion={promotions.filter((promo) => promo.featured)[0]}
                 leader={leaders.filter((leader) => leader.featured)[0]}
+                loading={loading}
+                err={err}
               />
             )}
           />
@@ -52,7 +67,14 @@ function App({ dishes, comments, promotions, leaders }) {
           <Route
             exact
             path="/menu"
-            component={() => <Menu dishes={dishes} comments={comments} />}
+            component={() => (
+              <Menu
+                dishes={dishes}
+                comments={comments}
+                loading={loading}
+                err={err}
+              />
+            )}
           />
           <Route exact path="/menu/:dishId" component={DishwithID} />
           <Redirect to="/home" />
@@ -64,13 +86,17 @@ function App({ dishes, comments, promotions, leaders }) {
 }
 const MapStateToProps = (state) => {
   return {
-    dishes: state.dishes,
+    dishes: state.dishes.dishes,
+    loading: state.dishes.isLoading,
+    err: state.dishes.err,
     comments: state.comments,
     promotions: state.promotions,
     leaders: state.leaders,
   };
 };
-const MapDispachToProps = () => {};
+const MapDispachToProps = (dispatch) => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+});
 export default connect(MapStateToProps, MapDispachToProps)(App);
 /**
  * withRouter must be used inside a Route with readux

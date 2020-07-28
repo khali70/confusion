@@ -14,7 +14,7 @@ const required = (val) => val && val.length;
 const MaxLength = (len) => (val) => !val || val.length <= len;
 const MinLength = (len) => (val) => val && val.length >= len;
 
-function DishdetailComponent() {
+function DishdetailComponent({ addComment, dishId }) {
   const [modal, toggleModalState] = useState(() => {
     return { isModalOpen: false };
   });
@@ -22,8 +22,9 @@ function DishdetailComponent() {
     toggleModalState({ isModalOpen: !modal.isModalOpen });
   };
   const handleSubmit = (values) => {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    toggleModal();
+    alert(JSON.stringify(values));
+    addComment(dishId, values.rating, values.name, values.comment);
   };
   return (
     <>
@@ -42,16 +43,31 @@ function DishdetailComponent() {
               <Col xs={12}>
                 <Control.select
                   model=".rating"
-                  id="name"
+                  id="rating"
                   name="rating"
                   className="form-control"
+                  required
+                  validators={{
+                    required,
+                  }}
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option selected={true}>5</option>
+                  <option disabled selected>
+                    Rating
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
                 </Control.select>
+                <Errors
+                  className="text-danger"
+                  model=".rating"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                  }}
+                />
               </Col>
             </Row>
 

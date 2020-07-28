@@ -7,8 +7,27 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
+import Loading from "./Lodaing";
+
 import { Link } from "react-router-dom";
-const Menu = ({ dishes }) => {
+const Menu = ({ dishes, loading, err }) => {
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="row text-center py-5">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (err) {
+    return (
+      <div className="container">
+        <div className="row text-center py-5">
+          <h4>{err}</h4>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="container">
       <div className="row">

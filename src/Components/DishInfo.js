@@ -9,12 +9,31 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import DishdetailComponent from "./DishdetailComponent";
+import { addComment } from "../Redux/Actions";
+import Lodaing from "./Lodaing";
 
 class DishInfo extends Component {
   render() {
-    const { dish, comments } = this.props;
-    if (dish != null) {
+    const { dish, comments, loading, err } = this.props;
+    if (loading) {
+      return (
+        <div className="container">
+          <div className="row text-center py-5">
+            <Lodaing />
+          </div>
+        </div>
+      );
+    } else if (err) {
+      return (
+        <div className="container">
+          <div className="row text-center py-5">
+            <h4>{err}</h4>
+          </div>
+        </div>
+      );
+    } else if (dish != null) {
       const date = comments.map((item) => {
         let x = new Intl.DateTimeFormat("en-US", {
           year: "numeric",
@@ -59,7 +78,10 @@ class DishInfo extends Component {
                   </p>
                 </div>
               ))}
-              <DishdetailComponent />
+              <DishdetailComponent
+                addComment={this.props.addComment}
+                dishId={comments[0].dishId}
+              />
             </div>
           </div>
         </div>
@@ -69,5 +91,9 @@ class DishInfo extends Component {
     }
   }
 }
+const MapDispachToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) =>
+    dispatch(addComment(dishId, rating, author, comment)),
+});
 
-export default DishInfo;
+export default connect(null, MapDispachToProps)(DishInfo);
