@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Adress from "./Adress";
+import Adress from "./switch/Adress";
 
 function Footer(props) {
   return (

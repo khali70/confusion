@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { actions } from "react-redux-form";
 // Components
 import Header from "./Components/Header";
-import Home from "./Components/Home";
-import About from "./Components/About";
-import Menu from "./Components/menuComponent";
-import Contact from "./Components/Contact";
+import Home from "./Components/switch/Home/Home";
+import About from "./Components/switch/About/About";
+import Menu from "./Components/switch/Menu/menuComponent";
+import Contact from "./Components/switch/contact/Contact";
 import Footer from "./Components/Footer";
-import DishInfo from "./Components/DishInfo";
-import { fetchDishes } from "./Redux/Actions";
+import DishInfo from "./Components/switch/Menu/DishInfo";
+import { fetchDishes } from "./Redux/Action/Actions";
 // import NotFound from "./Components/Notfound";
 
 function App({
@@ -20,6 +21,7 @@ function App({
   fetchDishes,
   loading,
   err,
+  resetFeedForm,
 }) {
   const DishwithID = ({ match }) => {
     return (
@@ -62,7 +64,10 @@ function App({
             path="/aboutus"
             component={() => <About leaders={leaders} />}
           />
-          <Route path="/contactus" component={() => <Contact />} />
+          <Route
+            path="/contactus"
+            component={() => <Contact resetFeedForm={resetFeedForm} />}
+          />
 
           <Route
             exact
@@ -96,6 +101,9 @@ const MapStateToProps = (state) => {
 };
 const MapDispachToProps = (dispatch) => ({
   fetchDishes: () => dispatch(fetchDishes()),
+  resetFeedForm: () => {
+    dispatch(actions.reset("feedback"));
+  },
 });
 export default connect(MapStateToProps, MapDispachToProps)(App);
 /**

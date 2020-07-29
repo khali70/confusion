@@ -7,7 +7,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import Loading from "./Lodaing";
+import Loading from "../Lodaing";
 
 import { Link } from "react-router-dom";
 const Menu = ({ dishes, loading, err }) => {

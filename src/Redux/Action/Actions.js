@@ -1,5 +1,5 @@
 import * as action from "./ActionTypes";
-import { DISHES } from "../shared/dishes";
+import { DISHES } from "../../shared/dishes";
 //Action creators
 export const addComment = (dishId, rating, author, comment) => ({
   type: action.ADD_COMMENT,

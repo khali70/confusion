@@ -1,4 +1,4 @@
-import * as action from "./ActionTypes";
+import * as action from "../Action/ActionTypes";
 
 const initState = { isLoading: true, err: null, dishes: [] };
 

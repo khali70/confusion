@@ -1,4 +1,4 @@
-import { PROMOTIONS } from "../shared/poromotion";
+import { PROMOTIONS } from "../../shared/poromotion";
 
 export const Promotions = (state = PROMOTIONS, { type, payload }) => {
   switch (type) {

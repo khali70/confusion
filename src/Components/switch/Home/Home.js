@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
-import Loading from "./Lodaing";
+import Loading from "../Lodaing";
 
 const RenderCard = ({ item }) => {
   return (

@@ -11,8 +11,8 @@ import {
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import DishdetailComponent from "./DishdetailComponent";
-import { addComment } from "../Redux/Actions";
-import Lodaing from "./Lodaing";
+import { addComment } from "../../../Redux/Action/Actions";
+import Lodaing from "../Lodaing";
 
 class DishInfo extends Component {
   render() {

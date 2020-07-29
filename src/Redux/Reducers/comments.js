@@ -1,5 +1,5 @@
-import { COMMENTS } from "../shared/commets";
-import { ADD_COMMENT } from "./ActionTypes";
+import { COMMENTS } from "../../shared/commets";
+import { ADD_COMMENT } from "../Action/ActionTypes";
 
 export const Comments = (state = COMMENTS, { type, payload }) => {
   switch (type) {
