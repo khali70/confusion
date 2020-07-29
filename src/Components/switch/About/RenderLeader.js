@@ -1,10 +1,11 @@
 import React from "react";
 import { Media } from "reactstrap";
+import { URL } from "../../../shared/baseURL";
 function RenderLeader({ image, name, designation, description }) {
   return (
     <Media tag="li">
       <Media left middle className="align-self-center">
-        <Media object src={image} alt={name} />
+        <Media object src={`${URL}${image}`} alt={name} />
       </Media>
       <Media body className="ml-5">
         <Media heading>

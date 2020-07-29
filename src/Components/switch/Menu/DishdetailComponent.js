@@ -23,7 +23,6 @@ function DishdetailComponent({ addComment, dishId }) {
   };
   const handleSubmit = (values) => {
     toggleModal();
-    alert(JSON.stringify(values));
     addComment(dishId, values.rating, values.name, values.comment);
   };
   return (

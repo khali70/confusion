@@ -10,7 +10,12 @@ import Menu from "./Components/switch/Menu/menuComponent";
 import Contact from "./Components/switch/contact/Contact";
 import Footer from "./Components/Footer";
 import DishInfo from "./Components/switch/Menu/DishInfo";
-import { fetchDishes } from "./Redux/Action/Actions";
+import {
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+  fetchLeaders,
+} from "./Redux/Action/Actions";
 // import NotFound from "./Components/Notfound";
 
 function App({
@@ -18,10 +23,13 @@ function App({
   comments,
   promotions,
   leaders,
-  fetchDishes,
   loading,
   err,
   resetFeedForm,
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+  fetchLeaders,
 }) {
   const DishwithID = ({ match }) => {
     return (
@@ -41,7 +49,10 @@ function App({
     );
   };
   useEffect(() => {
+    fetchComments();
     fetchDishes();
+    fetchPromos();
+    fetchLeaders();
   }, []);
   return (
     <BrowserRouter>
@@ -94,16 +105,19 @@ const MapStateToProps = (state) => {
     dishes: state.dishes.dishes,
     loading: state.dishes.isLoading,
     err: state.dishes.err,
-    comments: state.comments,
-    promotions: state.promotions,
-    leaders: state.leaders,
+    comments: state.comments.comments,
+    promotions: state.promotions.promotions,
+    leaders: state.leaders.leaders,
   };
 };
 const MapDispachToProps = (dispatch) => ({
   fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
   resetFeedForm: () => {
     dispatch(actions.reset("feedback"));
   },
+  fetchLeaders: () => dispatch(fetchLeaders()),
 });
 export default connect(MapStateToProps, MapDispachToProps)(App);
 /**

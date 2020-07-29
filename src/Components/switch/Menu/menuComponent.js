@@ -8,7 +8,7 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import Loading from "../Lodaing";
-
+import { URL } from "../../../shared/baseURL";
 import { Link } from "react-router-dom";
 const Menu = ({ dishes, loading, err }) => {
   if (loading) {
@@ -48,7 +48,7 @@ const Menu = ({ dishes, loading, err }) => {
             <div className="col-12 col-md-3 my-1" key={dish.id}>
               <Card>
                 <Link to={`/menu/${dish.id}`}>
-                  <CardImg object src={dish.image} alt={dish.name} />
+                  <CardImg object src={`${URL}${dish.image}`} alt={dish.name} />
                   <CardImgOverlay>
                     <CardTitle> {dish.name}</CardTitle>
                   </CardImgOverlay>

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import DishdetailComponent from "./DishdetailComponent";
 import { addComment } from "../../../Redux/Action/Actions";
 import Lodaing from "../Lodaing";
+import { URL } from "../../../shared/baseURL";
 
 class DishInfo extends Component {
   render() {
@@ -60,7 +61,7 @@ class DishInfo extends Component {
           <div className="row ">
             <div className="col-12 col-md-5 ">
               <Card>
-                <CardImg object src={dish.image} alt={dish.name} />
+                <CardImg object src={`${URL}${dish.image}`} alt={dish.name} />
                 <CardBody>
                   <CardTitle> {dish.name}</CardTitle>
                   <CardText>{dish.description}</CardText>

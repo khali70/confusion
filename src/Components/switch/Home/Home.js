@@ -8,12 +8,12 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import Loading from "../Lodaing";
-
+import { URL } from "../../../shared/baseURL";
 const RenderCard = ({ item }) => {
   return (
     <div className="col-12 col-md m-1">
       <Card>
-        <CardImg src={item.image} alt={item.name} />
+        <CardImg src={`${URL}${item.image}`} alt={item.name} />
         <CardBody>
           <CardTitle>{item.name}</CardTitle>
           {item.designation ? (
