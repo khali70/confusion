@@ -24,7 +24,10 @@ function App({
   promotions,
   leaders,
   loading,
-  err,
+  dishErr,
+  commentsErr,
+  promoErr,
+  leadersErr,
   resetFeedForm,
   fetchDishes,
   fetchComments,
@@ -44,7 +47,10 @@ function App({
           (comment) => comment.dishId === parseInt(match.params.dishId, 10)
         )}
         loading={loading}
-        err={err}
+        dishErr={dishErr}
+        commentsErr={commentsErr}
+        promoErr={promoErr}
+        leadersErr={leadersErr}
       />
     );
   };
@@ -67,13 +73,16 @@ function App({
                 promotion={promotions.filter((promo) => promo.featured)[0]}
                 leader={leaders.filter((leader) => leader.featured)[0]}
                 loading={loading}
-                err={err}
+                dishErr={dishErr}
+                promoErr={promoErr}
               />
             )}
           />
           <Route
             path="/aboutus"
-            component={() => <About leaders={leaders} />}
+            component={() => (
+              <About leaders={leaders} leadersErr={leadersErr} />
+            )}
           />
           <Route
             path="/contactus"
@@ -88,7 +97,8 @@ function App({
                 dishes={dishes}
                 comments={comments}
                 loading={loading}
-                err={err}
+                dishErr={dishErr}
+                commentsErr={commentsErr}
               />
             )}
           />
@@ -104,10 +114,13 @@ const MapStateToProps = (state) => {
   return {
     dishes: state.dishes.dishes,
     loading: state.dishes.isLoading,
-    err: state.dishes.err,
+    dishErr: state.dishes.err,
     comments: state.comments.comments,
+    commentsErr: state.comments.err,
     promotions: state.promotions.promotions,
+    promoErr: state.promotions.err,
     leaders: state.leaders.leaders,
+    leadersErr: state.leaders.err,
   };
 };
 const MapDispachToProps = (dispatch) => ({
