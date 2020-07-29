@@ -2,15 +2,7 @@ import * as action from "./ActionTypes";
 import { URL } from "../../shared/baseURL";
 // TODO hndel the errors in the project
 //Action creators
-export const addComment = (dishId, rating, author, comment) => ({
-  type: action.ADD_COMMENT,
-  payload: {
-    dishId,
-    rating,
-    author,
-    comment,
-  },
-});
+
 // dishes
 export const fetchDishes = (payload) => (dispatch) => {
   dispatch(dishesLoading(true));
@@ -83,6 +75,49 @@ export const addComments = (comments) => ({
   type: action.ADD_COMMENTS,
   payload: comments,
 });
+export const addComment = (comment) => ({
+  type: action.ADD_COMMENT,
+  payload: comment,
+});
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+  const newComment = {
+    dishId,
+    rating,
+    author,
+    comment,
+    date: new Date().toISOString(),
+  };
+  return fetch(`${URL}comments`, {
+    method: "POST",
+    body: JSON.stringify(newComment),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let err = new Error(
+            "error" + response.status + " : " + response.statusText
+          );
+          err.response = response;
+          throw err;
+        }
+      },
+      (err) => {
+        let errMsg = new Error(err.message);
+        throw errMsg;
+      }
+    )
+    .then((res) => dispatch(addComment(newComment)))
+    .catch((err) => {
+      console.log("POST comment");
+      console.log(err);
+    });
+};
 // promotions
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading());

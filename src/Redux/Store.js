@@ -21,7 +21,7 @@ export const ConfigureStore = () => {
         feedback: InitialFeedback,
       }),
     }),
-    composeWithDevTools(applyMiddleware(thunk, logger))
+    composeWithDevTools(applyMiddleware(thunk))
   );
 
   return store;

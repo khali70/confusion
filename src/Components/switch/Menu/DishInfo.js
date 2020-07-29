@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import DishdetailComponent from "./DishdetailComponent";
-import { addComment } from "../../../Redux/Action/Actions";
+import { postComment } from "../../../Redux/Action/Actions";
 import Lodaing from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
 
@@ -94,7 +94,7 @@ class DishInfo extends Component {
 }
 const MapDispachToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>
-    dispatch(addComment(dishId, rating, author, comment)),
+    dispatch(postComment(dishId, rating, author, comment)),
 });
 
 export default connect(null, MapDispachToProps)(DishInfo);
