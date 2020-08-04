@@ -9,6 +9,7 @@ import { Comments } from "./Reducers/comments";
 import { Dishes } from "./Reducers/dishes";
 import { Leaders } from "./Reducers/leaders";
 import { Promotions } from "./Reducers/promotions";
+import { FeedBack } from "./Reducers/feedback";
 
 export const ConfigureStore = () => {
   const store = createStore(
@@ -17,6 +18,7 @@ export const ConfigureStore = () => {
       comments: Comments,
       promotions: Promotions,
       leaders: Leaders,
+      feedback: FeedBack,
       ...createForms({
         feedback: InitialFeedback,
       }),

@@ -1,6 +1,5 @@
 import * as action from "./ActionTypes";
 import { URL } from "../../shared/baseURL";
-// TODO hndel the errors in the project
 //Action creators
 
 // dishes
@@ -196,4 +195,40 @@ export const LeaderssLoading = () => ({
 export const LeadersFailed = (errmess) => ({
   type: action.LEADERS_FAILED,
   payload: errmess,
+});
+// TODO postFeedback() action at  http://localhost:3001/feedback
+export const postFeedback = (values) => (dispatch) => {
+  return fetch(`${URL}feedback`, {
+    method: "POST",
+    body: JSON.stringify(values),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let err = new Error(
+            "error" + response.status + " : " + response.statusText
+          );
+          err.response = response;
+          throw err;
+        }
+      },
+      (err) => {
+        let errMsg = new Error(err.message);
+        throw errMsg;
+      }
+    )
+    .then(() => dispatch(getlastfeed()))
+    .catch((err) => {
+      console.log("postFeedback");
+      console.log(err);
+    });
+};
+export const getlastfeed = () => ({
+  type: action.GET_FEED,
 });

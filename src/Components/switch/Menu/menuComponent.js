@@ -10,7 +10,7 @@ import {
 import Loading from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
 import { Link } from "react-router-dom";
-const Menu = ({ dishes, loading, err }) => {
+const Menu = ({ dishes, loading, dishErr }) => {
   if (loading) {
     return (
       <div className="container">
@@ -19,11 +19,11 @@ const Menu = ({ dishes, loading, err }) => {
         </div>
       </div>
     );
-  } else if (err) {
+  } else if (dishErr) {
     return (
       <div className="container">
         <div className="row text-center py-5">
-          <h4>{err}</h4>
+          <h4 className="col-12">{dishErr}</h4>
         </div>
       </div>
     );

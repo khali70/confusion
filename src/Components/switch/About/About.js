@@ -8,9 +8,10 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Stagger, Fade } from "react-animation-components";
 import RenderLeader from "./RenderLeader";
 
-const About = ({ leaders }) => {
+const About = ({ leaders, leadersErr }) => {
   return (
     <div className="container">
       <div className="row">
@@ -25,7 +26,7 @@ const About = ({ leaders }) => {
           <hr />
         </div>
       </div>
-      <div className="row row-content">
+      <div className="row row-content border-buttom ">
         <div className="col-12 col-md-6">
           <h2>Our History</h2>
           <p>
@@ -87,11 +88,19 @@ const About = ({ leaders }) => {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <Media list>
-            {leaders.map((leader) => (
-              <RenderLeader key={leader.id} {...leader} />
-            ))}
-          </Media>
+          {leadersErr ? (
+            <h4>{leadersErr}</h4>
+          ) : (
+            <Media list>
+              <Stagger in>
+                {leaders.map((leader) => (
+                  <Fade in>
+                    <RenderLeader key={leader.id} {...leader} />
+                  </Fade>
+                ))}
+              </Stagger>
+            </Media>
+          )}
         </div>
       </div>
     </div>

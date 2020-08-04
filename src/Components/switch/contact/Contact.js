@@ -8,19 +8,18 @@ import {
   Col,
   Row,
 } from "reactstrap";
-import { Control, Errors, actions, Form } from "react-redux-form";
+import { Control, Errors, Form } from "react-redux-form";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 const required = (val) => val && val.length;
 const MaxLength = (len) => (val) => !val || val.length <= len;
 const MinLength = (len) => (val) => val && val.length >= len;
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const Contact = ({ resetFeedForm }) => {
+const Contact = ({ resetFeedForm, postFeedback }) => {
   const handleSubmit = (values) => {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    // alert the data fro db
+    postFeedback(values);
     resetFeedForm();
   };
   return (
@@ -241,7 +240,5 @@ const Contact = ({ resetFeedForm }) => {
     </div>
   );
 };
-const MapStateToProps = (state) => {
-  return {};
-};
-export default connect(MapStateToProps, null)(Contact);
+
+export default Contact;

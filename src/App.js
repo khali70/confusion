@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { actions } from "react-redux-form";
 // Components
@@ -15,7 +15,9 @@ import {
   fetchComments,
   fetchPromos,
   fetchLeaders,
+  postFeedback,
 } from "./Redux/Action/Actions";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 // import NotFound from "./Components/Notfound";
 
 function App({
@@ -28,11 +30,12 @@ function App({
   commentsErr,
   promoErr,
   leadersErr,
-  resetFeedForm,
   fetchDishes,
   fetchComments,
   fetchPromos,
   fetchLeaders,
+  resetFeedForm,
+  postFeedback,
 }) {
   const DishwithID = ({ match }) => {
     return (
@@ -50,7 +53,6 @@ function App({
         dishErr={dishErr}
         commentsErr={commentsErr}
         promoErr={promoErr}
-        leadersErr={leadersErr}
       />
     );
   };
@@ -60,54 +62,58 @@ function App({
     fetchPromos();
     fetchLeaders();
   }, []);
+  const location = useLocation();
+  console.log(location);
   return (
-    <BrowserRouter>
-      <div>
-        <Header />
-        <Switch>
-          <Route
-            path="/home"
-            component={() => (
-              <Home
-                dish={dishes.filter((dish) => dish.featured)[0]}
-                promotion={promotions.filter((promo) => promo.featured)[0]}
-                leader={leaders.filter((leader) => leader.featured)[0]}
-                loading={loading}
-                dishErr={dishErr}
-                promoErr={promoErr}
-              />
-            )}
-          />
-          <Route
-            path="/aboutus"
-            component={() => (
-              <About leaders={leaders} leadersErr={leadersErr} />
-            )}
-          />
-          <Route
-            path="/contactus"
-            component={() => <Contact resetFeedForm={resetFeedForm} />}
-          />
+    <div>
+      <Header />
+      <TransitionGroup>
+        <CSSTransition key={location.key} classNames="page" timeout={300}>
+          <Switch location={location}>
+            <Route
+              path="/home"
+              component={() => (
+                <Home
+                  dish={dishes.filter((dish) => dish.featured)[0]}
+                  dishErr={dishErr}
+                  promotion={promotions.filter((promo) => promo.featured)[0]}
+                  promoErr={promoErr}
+                  leader={leaders.filter((leader) => leader.featured)[0]}
+                  leadersErr={leadersErr}
+                  loading={loading}
+                />
+              )}
+            />
+            <Route
+              path="/aboutus"
+              component={() => (
+                <About leaders={leaders} leadersErr={leadersErr} />
+              )}
+            />
+            <Route
+              path="/contactus"
+              component={() => (
+                <Contact
+                  resetFeedForm={resetFeedForm}
+                  postFeedback={postFeedback}
+                />
+              )}
+            />
 
-          <Route
-            exact
-            path="/menu"
-            component={() => (
-              <Menu
-                dishes={dishes}
-                comments={comments}
-                loading={loading}
-                dishErr={dishErr}
-                commentsErr={commentsErr}
-              />
-            )}
-          />
-          <Route exact path="/menu/:dishId" component={DishwithID} />
-          <Redirect to="/home" />
-        </Switch>
-        <Footer />
-      </div>
-    </BrowserRouter>
+            <Route
+              exact
+              path="/menu"
+              component={() => (
+                <Menu dishes={dishes} loading={loading} dishErr={dishErr} />
+              )}
+            />
+            <Route exact path="/menu/:dishId" component={DishwithID} />
+            <Redirect to="/home" />
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
+      <Footer />
+    </div>
   );
 }
 const MapStateToProps = (state) => {
@@ -127,10 +133,11 @@ const MapDispachToProps = (dispatch) => ({
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
   resetFeedForm: () => {
     dispatch(actions.reset("feedback"));
   },
-  fetchLeaders: () => dispatch(fetchLeaders()),
+  postFeedback: (values) => dispatch(postFeedback(values)),
 });
 export default connect(MapStateToProps, MapDispachToProps)(App);
 /**

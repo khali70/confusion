@@ -9,25 +9,49 @@ import {
 } from "reactstrap";
 import Loading from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
-const RenderCard = ({ item }) => {
+import { FadeTransform } from "react-animation-components";
+const RenderCard = ({ item, err }) => {
   return (
     <div className="col-12 col-md m-1">
-      <Card>
-        <CardImg src={`${URL}${item.image}`} alt={item.name} />
-        <CardBody>
-          <CardTitle>{item.name}</CardTitle>
-          {item.designation ? (
-            <CardSubtitle>{item.designation}</CardSubtitle>
-          ) : null}
-          <CardText>{item.description}</CardText>
-        </CardBody>
-      </Card>
+      {item ? (
+        <FadeTransform
+          in
+          transformProps={{
+            exitTransform: "scale(0.5) translateY(-50%)",
+          }}
+        >
+          <Card>
+            <CardImg src={`${URL}${item.image}`} alt={item.name} />
+            <CardBody>
+              <CardTitle>{item.name}</CardTitle>
+              {item.designation ? (
+                <CardSubtitle>{item.designation}</CardSubtitle>
+              ) : null}
+              <CardText>{item.description}</CardText>
+            </CardBody>
+          </Card>
+        </FadeTransform>
+      ) : (
+        <h4>{err}</h4>
+      )}
     </div>
   );
 };
 
-function Home({ dish = null, promotion, leader, loading, err }) {
-  const propsArr = [dish, promotion, leader];
+function Home({
+  dish = null,
+  dishErr,
+  promotion,
+  promoErr,
+  leader,
+  leadersErr,
+  loading,
+}) {
+  const propsArr = [
+    { item: dish, err: dishErr },
+    { item: promotion, err: promoErr },
+    { item: leader, err: leadersErr },
+  ];
   if (loading) {
     return (
       <div className="container">
@@ -36,26 +60,17 @@ function Home({ dish = null, promotion, leader, loading, err }) {
         </div>
       </div>
     );
-  } else if (err) {
+  } else {
     return (
       <div className="container">
-        <div className="row text-center py-5">
-          <h4>{err}</h4>
+        <div className="row align-items-start">
+          {propsArr.map((prop, index) => {
+            return <RenderCard key={index} item={prop.item} err={prop.err} />;
+          })}
         </div>
       </div>
     );
   }
-  return (
-    <div className="container">
-      <div className="row align-items-start">
-        {propsArr.map((prop, index) => {
-          if (prop) {
-            return <RenderCard key={index} item={prop} />;
-          } else return false;
-        })}
-      </div>
-    </div>
-  );
 }
 
 export default Home;
