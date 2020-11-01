@@ -7,18 +7,29 @@ import {
   CardText,
   Breadcrumb,
   BreadcrumbItem,
+  CardImgOverlay,
+  Button,
 } from "reactstrap";
 import { FadeTransform, Fade, Stagger } from "react-animation-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import DishdetailComponent from "./DishdetailComponent";
-import { postComment } from "../../../Redux/Action/Actions";
+import { postComment, postFavorite } from "../../../Redux/Action/Actions";
 import Lodaing from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
 
 class DishInfo extends Component {
   render() {
-    const { dish, comments, loading, dishErr, commentsErr } = this.props;
+    let {
+      dish,
+      comments,
+      loading,
+      dishErr,
+      commentsErr,
+      postfavorites,
+      favorites,
+    } = this.props;
+
     if (loading) {
       return (
         <div className="container">
@@ -28,14 +39,14 @@ class DishInfo extends Component {
         </div>
       );
     } else {
-      const date = comments.map((item) => {
-        let x = new Intl.DateTimeFormat("en-US", {
-          year: "numeric",
-          day: "2-digit",
-          month: "short",
-        }).format(new Date(Date.parse(item.date)));
-        return x;
-      });
+      // const date = comments.map((item) => {
+      //   let x = new Intl.DateTimeFormat("en-US", {
+      //     year: "numeric",
+      //     day: "2-digit",
+      //     month: "short",
+      //   }).format(new Date(Date.parse(item.date)));
+      //   return x;
+      // });
       return (
         <div className="container">
           {!dishErr && !commentsErr && (
@@ -70,6 +81,27 @@ class DishInfo extends Component {
                       src={`${URL}${dish.image}`}
                       alt={dish.name}
                     />
+                    <CardImgOverlay>
+                      <Button
+                        onClick={() => {
+                          if (
+                            favorites.dishes
+                              .map((dishid) => dishid._id === dish._id)
+                              .indexOf(true) < 0
+                          ) {
+                            postfavorites(dish._id);
+                          }
+                        }}
+                      >
+                        {favorites.dishes
+                          .map((dishid) => dishid._id === dish._id)
+                          .indexOf(true) > -1 ? (
+                          <i className="fa fa-heart"></i>
+                        ) : (
+                          <i className="fa fa-heart-o"></i>
+                        )}
+                      </Button>
+                    </CardImgOverlay>
                     <CardBody>
                       <CardTitle> {dish.name}</CardTitle>
                       <CardText>{dish.description}</CardText>
@@ -86,11 +118,15 @@ class DishInfo extends Component {
                 <Stagger in>
                   {comments.map((comment, index) => (
                     <Fade in>
-                      <div key={comment.id}>
+                      <div key={comment._id}>
                         <p>{comment.comment} </p>
                         <p>
-                          -- <span> {comment.author}</span>{" "}
-                          <span>{date[index]} </span>{" "}
+                          --{" "}
+                          <span>
+                            {" "}
+                            {`${comment.author.firstname} ${comment.author.lastname}`}
+                          </span>{" "}
+                          {/*TODO <span>{date[index]} </span> */}{" "}
                         </p>
                       </div>
                     </Fade>
@@ -98,7 +134,7 @@ class DishInfo extends Component {
                 </Stagger>
                 <DishdetailComponent
                   addComment={this.props.addComment}
-                  dishId={comments[0].dishId}
+                  dishId={dish._id}
                 />
               </div>
             )}
@@ -108,9 +144,14 @@ class DishInfo extends Component {
     }
   }
 }
+const MapStateToProps = (state) => ({
+  // favorites
+  favorites: state.favorites.favorites,
+});
 const MapDispachToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) =>
-    dispatch(postComment(dishId, rating, author, comment)),
+  addComment: (dishId, rating, comment) =>
+    dispatch(postComment(dishId, rating, comment)),
+  postfavorites: (dishId) => dispatch(postFavorite(dishId)),
 });
 
-export default connect(null, MapDispachToProps)(DishInfo);
+export default connect(MapStateToProps, MapDispachToProps)(DishInfo);

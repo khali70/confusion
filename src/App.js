@@ -10,6 +10,7 @@ import Menu from "./Components/switch/Menu/menuComponent";
 import Contact from "./Components/switch/contact/Contact";
 import Footer from "./Components/Footer";
 import DishInfo from "./Components/switch/Menu/DishInfo";
+import Favorites from "./Components/switch/Favorites";
 import {
   fetchDishes,
   fetchComments,
@@ -36,18 +37,16 @@ function App({
   fetchLeaders,
   resetFeedForm,
   postFeedback,
+  auth,
+  favorites,
 }) {
   const DishwithID = ({ match }) => {
     return (
       <DishInfo
         key={parseInt(match.params.dishId, 10)}
-        dish={
-          dishes.filter(
-            (dish) => dish.id === parseInt(match.params.dishId, 10)
-          )[0]
-        }
+        dish={dishes.filter((dish) => dish._id === match.params.dishId)[0]}
         comments={comments.filter(
-          (comment) => comment.dishId === parseInt(match.params.dishId, 10)
+          (comment) => comment.dishId === match.params.dishId
         )}
         loading={loading}
         dishErr={dishErr}
@@ -63,7 +62,23 @@ function App({
     fetchLeaders();
   }, []);
   const location = useLocation();
-  console.log(location);
+  const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={(props) =>
+        auth.isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/home",
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+    />
+  );
   return (
     <div>
       <Header />
@@ -96,6 +111,7 @@ function App({
                 <Contact
                   resetFeedForm={resetFeedForm}
                   postFeedback={postFeedback}
+                  isAuthenticated={auth.isAuthenticated}
                 />
               )}
             />
@@ -108,6 +124,11 @@ function App({
               )}
             />
             <Route exact path="/menu/:dishId" component={DishwithID} />
+            <PrivateRoute
+              exact
+              path="/favorites"
+              component={() => <Favorites {...favorites} />}
+            />
             <Redirect to="/home" />
           </Switch>
         </CSSTransition>
@@ -118,28 +139,44 @@ function App({
 }
 const MapStateToProps = (state) => {
   return {
+    // dishes
     dishes: state.dishes.dishes,
     loading: state.dishes.isLoading,
     dishErr: state.dishes.err,
+    // comments
     comments: state.comments.comments,
     commentsErr: state.comments.err,
+    // promo
     promotions: state.promotions.promotions,
     promoErr: state.promotions.err,
+    // leaders
     leaders: state.leaders.leaders,
     leadersErr: state.leaders.err,
+    // auth && users
+    auth: state.auth,
+    // favorites
+    favorites: state.favorites.favorites,
   };
 };
+// prettier-ignore
 const MapDispachToProps = (dispatch) => ({
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
   fetchLeaders: () => dispatch(fetchLeaders()),
-  resetFeedForm: () => {
-    dispatch(actions.reset("feedback"));
-  },
+  resetFeedForm: () => dispatch(actions.reset("feedback")),
   postFeedback: (values) => dispatch(postFeedback(values)),
 });
 export default connect(MapStateToProps, MapDispachToProps)(App);
 /**
  * withRouter must be used inside a Route with readux
+ */
+// TODO users register reduser action actioncreator store
+// TODO add the admin panale add,del,updata dishes get users
+// TODO add the Oauth with facebook
+// TODO add data to the comments at "./Components/switch/Menu/DishInfo.js"
+/**
+ * the animation of the switch the screen from location compare the last one with the current the make the gesture left or right based on that
+ * add comment it better to make the button fade then dragble starts with form comment && submit
+ * rating use the stars instade of number
  */

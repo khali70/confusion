@@ -5,18 +5,18 @@ function Adress() {
     <div className="col-7 col-sm-5">
       <h5>Our Address</h5>
       <address>
-        121, Clear Water Bay Road
+        Cairo,Shuobra,bahtem Street
         <br />
-        Clear Water Bay, Kowloon
+        at the ringroade bahtem Station
         <br />
-        HONG KONG
+        khli group
         <br />
-        <i className="fa fa-phone fa-lg"></i>: +852 1234 5678
+        <i className="fa fa-phone fa-lg"></i>: +01030790400
         <br />
-        <i className="fa fa-fax fa-lg"></i>: +852 8765 4321
+        <i className="fa fa-fax fa-lg"></i>: +01030790400
         <br />
         <i className="fa fa-envelope fa-lg"></i>:{" "}
-        <a href="mailto:confusion@food.net">confusion@food.net</a>
+        <a href="mailto:k7alifa.a7med70@gmail.com">k7alifa.a7med70@gmail.com</a>
       </address>
     </div>
   );

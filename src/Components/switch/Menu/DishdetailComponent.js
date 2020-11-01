@@ -11,8 +11,8 @@ import {
 import { LocalForm, Control, Errors } from "react-redux-form";
 
 const required = (val) => val && val.length;
-const MaxLength = (len) => (val) => !val || val.length <= len;
-const MinLength = (len) => (val) => val && val.length >= len;
+// const MaxLength = (len) => (val) => !val || val.length <= len;
+// const MinLength = (len) => (val) => val && val.length >= len;
 
 function DishdetailComponent({ addComment, dishId }) {
   const [modal, toggleModalState] = useState(() => {
@@ -22,8 +22,8 @@ function DishdetailComponent({ addComment, dishId }) {
     toggleModalState({ isModalOpen: !modal.isModalOpen });
   };
   const handleSubmit = (values) => {
+    addComment(dishId, values.rating, values.comment);
     toggleModal();
-    addComment(dishId, values.rating, values.name, values.comment);
   };
   return (
     <>
@@ -70,35 +70,6 @@ function DishdetailComponent({ addComment, dishId }) {
               </Col>
             </Row>
 
-            <Row className="form-group">
-              <Label htmlFor="name" xs={12}>
-                Your Name
-              </Label>
-              <Col xs={12}>
-                <Control.text
-                  model=".name"
-                  id="name"
-                  name="name"
-                  placeholder="Your Name"
-                  className="form-control"
-                  validators={{
-                    required,
-                    minLength: MinLength(3),
-                    maxLength: MaxLength(15),
-                  }}
-                />
-                <Errors
-                  className="text-danger"
-                  model=".name"
-                  show="touched"
-                  messages={{
-                    required: "Required",
-                    minLength: "Must be greater than 2 characters",
-                    maxLength: "Must be 15 characters or less",
-                  }}
-                />
-              </Col>
-            </Row>
             <Row className="form-group">
               <Label htmlFor="comment" xs={12}>
                 Your Comment

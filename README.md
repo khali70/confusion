@@ -1,68 +1,114 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## tabel content
+
+- [Availabe scripts](#avilable-scripts)
+  - [`yarn start` to stat the app](#yarn-start)
+  - [`yarn test`](#yarn-testt)
+- [the app structure](#app-structure)
+  - [Main](#main)
+  - [fixed Component](#fixed-copmonent)
+    - [NavBar&Footer (fixed component)](#nav-and-footer) -[Dynamic Compontent](#dynamic-component)
+    - [Menu](#Menu)
+    - [Home](#home)
+    - [About](#about)
+    - [Contact us](#Contact-us)
+    - [Favorites](#favorites)
+
+---
+
 ## Available Scripts
 
-In the project directory, you can run:
+untill now there's now scripts yet.
 
 ### `yarn start`
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:1250](http://localhost:1250) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+in this app there is no test script
 
-### `yarn build`
+## App Structure
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+this app consit of main Componet which is `App.js` this main Componet us `React-Router` to route to other screen[home - menu - contact - favorites - aboutus]
+there is fixed component [navbar - footer]<br>
+`props` from `Redux`
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- `fetchComments()`
+- `fetchDishes()`
+- `fetchPromos()`
+- `fetchLeaders()`
+- resetFeedForm()
+- dishes
+- loading
+- dishErr
+- comments
+- commentsErr
+- promotions
+- promoErr
+- leaders
+- leadersErr
+- favorites
+  - dishes []
+  - userid
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# fixed Copmonent
 
-### `yarn eject`
+## Header
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+the Header consist of hearder and navbar
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> ### Navbar
+>
+> have the links for `navigation` to the other screens<br>
+> have the `login button`
+>
+> ### Jumbotron
+>
+> the header for the app with `no funtionality`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Footer
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+consist of 1st row > 4 col[ 3 - 5 - 4 ]<br>
+the `1st col is for nav`
 
-## Learn More
+# Dynamic Component
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Home
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+in this component the `featured` dishes , chiffes displayed
 
-### Code Splitting
+## Menu
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### menuComponent<br>
 
-### Analyzing the Bundle Size
+at `/menu` the `menucomponent` map the dishes which pass to it throw the `app.js`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### Dish Info
 
-### Making a Progressive Web App
+- at `/menu/:dishid` the `DishInfo` render the dish get the dish form `app.js` as the `ID` at match.params.dishId
+- map the comment that it get form the `app.js` and render the `DishDetails.js`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### Dish Details
 
-### Advanced Configuration
+TODO: chang the name to `AddNewComment.js`
+in this compont display btn `submit Comment` onClick open a comment modal with to feilds.<br>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```
+rating , comment
+```
 
-### Deployment
+`props`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+- addcomment() from dishinfo from `redux`
+- dishId form dishinfo
 
-### `yarn build` fails to minify
+## Favorites
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+only the sigened in user can loging this page the favorites reducer fitch the state form local on reload
+the `props`

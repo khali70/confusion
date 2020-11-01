@@ -15,11 +15,20 @@ import {
   FormGroup,
   Label,
   Input,
+  InputGroup,
+  InputGroupButtonDropdown,
+  InputGroupAddon,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
+import { URL } from "../shared/baseURL";
+import { connect } from "react-redux";
+import { loginUser, logoutUser } from "../Redux/Action/Actions";
 
-function Header() {
-  let username, password, rem;
+function Header({ login, auth, logoutUser }) {
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
+  const [rememberMe, setremmeburMe] = useState(false);
+  const [showpass, toggelpass_visiabilty] = useState(false);
   const [state, toggleNavState] = useState(() => {
     return { isNavOpen: false };
   });
@@ -32,15 +41,21 @@ function Header() {
   const toggleModal = () => {
     toggleModalState({ isModalOpen: !modal.isModalOpen });
   };
+  const reset = () => {
+    setusername("");
+    setpassword("");
+    setremmeburMe(false);
+    toggleModal();
+  };
   const handelLogin = (e) => {
     e.preventDefault();
-    alert(
-      `
-     User name ${username.value} 
-     password is ${password.value}
-     remember : ${rem.value}
-    `
-    );
+    const creds = { username, password, rememberMe };
+    // alert(JSON.stringify(creds));
+    login(creds);
+    reset();
+  };
+  const handleLogout = () => {
+    logoutUser();
   };
   return (
     <React.Fragment>
@@ -49,7 +64,7 @@ function Header() {
           <NavbarToggler onClick={() => toggleNav()} />
           <NavbarBrand className="mr-auto" href="/">
             <img
-              src="assets/images/logo.png"
+              src={`${URL}images/logo.png`}
               height="30"
               width="41"
               alt="Ristorante Con Fusion"
@@ -73,6 +88,11 @@ function Header() {
                 </NavLink>
               </NavItem>
               <NavItem>
+                <NavLink className="nav-link" to="/favorites">
+                  <i className="fa fa-heart fa-lg"></i> My Favorites
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink className="nav-link" to="/contactus">
                   <span className="fa fa-address-card fa-lg"></span> Contact Us
                 </NavLink>
@@ -80,10 +100,24 @@ function Header() {
             </Nav>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <Button outline onClick={toggleModal}>
-                  <i className="fa fa-sign-in"></i>
-                  Login
-                </Button>
+                {!auth.isAuthenticated ? (
+                  <Button outline onClick={toggleModal}>
+                    <span className="fa fa-sign-in fa-lg"></span> Login
+                    {auth.isFetching ? (
+                      <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                    ) : null}
+                  </Button>
+                ) : (
+                  <div>
+                    <div className="navbar-text mr-3">{auth.user.username}</div>
+                    <Button outline onClick={handleLogout}>
+                      <span className="fa fa-sign-out fa-lg"></span> Logout
+                      {auth.isFetching ? (
+                        <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                      ) : null}
+                    </Button>
+                  </div>
+                )}
               </NavItem>
             </Nav>
           </Collapse>
@@ -113,28 +147,47 @@ function Header() {
                 type="text"
                 id="username"
                 name="username"
-                innerRef={(input) => (username = input)}
+                value={username}
+                onChange={(e) => setusername(e.target.value)}
               />
             </FormGroup>
             <FormGroup>
               <Label htmlFor="password">User password</Label>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                innerRef={(input) => (password = input)}
-              />
+              <InputGroup>
+                <Input
+                  type={!showpass ? "password" : "text"}
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setpassword(e.target.value)}
+                />
+                <InputGroupAddon addonType="prepend">
+                  <Button
+                    color="primary"
+                    className="border-0"
+                    onClick={(e) => toggelpass_visiabilty(!showpass)}
+                  >
+                    {showpass ? (
+                      <i class="fa fa-eye"></i>
+                    ) : (
+                      <i class="fa fa-eye-slash"></i>
+                    )}
+                  </Button>
+                </InputGroupAddon>
+              </InputGroup>
             </FormGroup>
             <FormGroup check>
               <Label htmlFor="rememberMe" check>
                 <Input
                   type="checkbox"
                   name="rememberMe"
-                  innerRef={(input) => (rem = input)}
+                  value={rememberMe}
+                  onChange={(e) => setremmeburMe(e.target.value)}
                 />
                 Remember Me
               </Label>
             </FormGroup>
+            {/* TODO add register user */}
             <Button type="submit" value="submit" color="primary" block>
               Login
             </Button>
@@ -144,5 +197,11 @@ function Header() {
     </React.Fragment>
   );
 }
-
-export default Header;
+const MapStateToProps = (state) => ({
+  auth: state.auth,
+});
+const MapDispachToProps = (dispatch) => ({
+  login: (creds) => dispatch(loginUser(creds)),
+  logoutUser: () => dispatch(logoutUser()),
+});
+export default connect(MapStateToProps, MapDispachToProps)(Header);
