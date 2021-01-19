@@ -7,9 +7,17 @@ import {
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
+
 import Loading from "../Lodaing";
+
 import { URL } from "../../../shared/baseURL";
 import { FadeTransform } from "react-animation-components";
+/**
+ * @param {homeCard}  { item => the data to display ,err=> the err to display if data null }
+ * @returns data in card or err in element
+ * @description
+ * react function componet display the 3 cards in the home page
+ */
 const RenderCard = ({ item, err }) => {
   return (
     <div className="col-12 col-md m-1">
@@ -37,7 +45,9 @@ const RenderCard = ({ item, err }) => {
     </div>
   );
 };
-
+/**
+ * @description display the featured leader dish and promotion
+ */
 function Home({
   dish = null,
   dishErr,
