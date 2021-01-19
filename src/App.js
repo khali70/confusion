@@ -11,6 +11,7 @@ import Contact from "./Components/switch/contact/Contact";
 import Footer from "./Components/Footer";
 import DishInfo from "./Components/switch/Menu/DishInfo";
 import Favorites from "./Components/switch/Favorites";
+// Actions
 import {
   fetchDishes,
   fetchComments,
@@ -18,14 +19,21 @@ import {
   fetchLeaders,
   postFeedback,
 } from "./Redux/Action/Actions";
+// Animation
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-// import NotFound from "./Components/Notfound";
+/**
+ * @param data `{dishes , comments, promotions , leaders , favorites }`
+ * @param serverActions `{fetch*,post*}`action functions that contact with the server over `RestApi`
+ * @param errors `{*Err}`
+ * @param auth the user state in the app
+ */
 
 function App({
   dishes,
   comments,
   promotions,
   leaders,
+  favorites,
   loading,
   dishErr,
   commentsErr,
@@ -38,8 +46,11 @@ function App({
   resetFeedForm,
   postFeedback,
   auth,
-  favorites,
 }) {
+  /**
+   * @returns the dish Componet when user click the dish
+   * @param {History} param0 the React router history objcet that include the `dishId`
+   */
   const DishwithID = ({ match }) => {
     return (
       <DishInfo
@@ -56,12 +67,18 @@ function App({
     );
   };
   useEffect(() => {
+    // on the app start fetch the Comment,dishes,promotions,leader from the server
     fetchComments();
     fetchDishes();
     fetchPromos();
     fetchLeaders();
   }, []);
   const location = useLocation();
+  /**
+   * @description
+   * react function componet that return the route if the user hase the permition
+   * @param {*} param0 `{jsx.element,arguments[]}`
+   */
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
@@ -79,11 +96,15 @@ function App({
       }
     />
   );
+
   return (
     <div>
+      {/* navbar headre */}
       <Header />
+      {/* animation container */}
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="page" timeout={300}>
+          {/* the screens in the app */}
           <Switch location={location}>
             <Route
               path="/home"
@@ -160,6 +181,7 @@ const MapStateToProps = (state) => {
 };
 // prettier-ignore
 const MapDispachToProps = (dispatch) => ({
+  // 
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
@@ -168,15 +190,3 @@ const MapDispachToProps = (dispatch) => ({
   postFeedback: (values) => dispatch(postFeedback(values)),
 });
 export default connect(MapStateToProps, MapDispachToProps)(App);
-/**
- * withRouter must be used inside a Route with readux
- */
-// TODO users register reduser action actioncreator store
-// TODO add the admin panale add,del,updata dishes get users
-// TODO add the Oauth with facebook
-// TODO add data to the comments at "./Components/switch/Menu/DishInfo.js"
-/**
- * the animation of the switch the screen from location compare the last one with the current the make the gesture left or right based on that
- * add comment it better to make the button fade then dragble starts with form comment && submit
- * rating use the stars instade of number
- */

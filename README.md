@@ -14,6 +14,9 @@
     - [Dish Info](#dish-info)
     - [Dish Details](#dish-details)
   - [Favorites](#favorites)
+- [todo's](#todos)
+  - [bugs](#bugs)
+  - [future work](#future-work)
 
 ---
 
@@ -113,4 +116,17 @@ rating , comment
 only the sigened in user can loging this page the favorites reducer fitch the state form local on reload
 the `props`
 
--
+# todo's
+
+## bugs
+
+- [ ] refresh the token
+- [ ] change route animation
+- [ ] add the admin panale add,del,updata dishes get users,add
+- [ ] register user
+- [ ] add date to the comments at [DishInfo](src/Components/switch/Menu/DishInfo.js)
+
+## future work
+
+- [ ] chang the name to `AddNewComment.js`
+- [ ] add the Oauth with facebook
