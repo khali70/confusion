@@ -16,10 +16,15 @@ const MinLength = (len) => (val) => val && val.length >= len;
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const Contact = ({ resetFeedForm, postFeedback }) => {
+const Contact = ({ resetFeedForm, postFeedback, isAuthenticated }) => {
   const handleSubmit = (values) => {
     // alert the data fro db
-    postFeedback(values);
+    if (isAuthenticated) {
+      postFeedback(values);
+      // alert(JSON.stringify(values));
+    } else {
+      alert("you must be Authenticated to give a feedback");
+    }
     resetFeedForm();
   };
   return (
@@ -42,14 +47,20 @@ const Contact = ({ resetFeedForm, postFeedback }) => {
         </div>
         <Adress />
         <div className="col-12 col-sm-6 offset-sm-1">
-          <h5>Map of our Location</h5>
+          <iframe
+            title="maptoHome"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d862.4383500721683!2d31.280634140289788!3d30.158465609748532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458158acad1580d%3A0x765f85bc538ea476!2z2YXYs9is2K8g2KfZhNix2K3ZhdmG!5e0!3m2!1sen!2seg!4v1604008816448!5m2!1sen!2seg"
+          ></iframe>
         </div>
         <div className="col-12 col-sm-11 offset-sm-1">
           <div className="btn-group" role="group">
             <a
               role="button"
               className="btn btn-primary"
-              href="tel:+85212345678"
+              href="tel:+201030790400"
             >
               <i className="fa fa-phone"></i> Call
             </a>
@@ -73,64 +84,6 @@ const Contact = ({ resetFeedForm, postFeedback }) => {
         </div>
         <div className="col-12 col-md-9">
           <Form model="feedback" onSubmit={(values) => handleSubmit(values)}>
-            <Row className="form-group">
-              <Label htmlFor="firstname" md={2}>
-                First Name
-              </Label>
-              <Col md={10}>
-                <Control.text
-                  model=".firstname"
-                  id="firstname"
-                  name="firstname"
-                  placeholder="First Name"
-                  className="form-control"
-                  validators={{
-                    required,
-                    minLength: MinLength(3),
-                    maxLength: MaxLength(15),
-                  }}
-                />
-                <Errors
-                  className="text-danger"
-                  model=".firstname"
-                  show="touched"
-                  messages={{
-                    required: "Required",
-                    minLength: "Must be greater than 2 characters",
-                    maxLength: "Must be 15 characters or less",
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className="form-group">
-              <Label htmlFor="lastname" md={2}>
-                Last Name
-              </Label>
-              <Col md={10}>
-                <Control.text
-                  model=".lastname"
-                  id="lastname"
-                  name="lastname"
-                  placeholder="Last Name"
-                  className="form-control"
-                  validators={{
-                    required,
-                    minLength: MinLength(3),
-                    maxLength: MaxLength(15),
-                  }}
-                />
-                <Errors
-                  className="text-danger"
-                  model=".lastname"
-                  show="touched"
-                  messages={{
-                    required: "Required",
-                    minLength: "Must be greater than 2 characters",
-                    maxLength: "Must be 15 characters or less",
-                  }}
-                />
-              </Col>
-            </Row>
             <Row className="form-group">
               <Label htmlFor="telnum" md={2}>
                 Contact Tel.

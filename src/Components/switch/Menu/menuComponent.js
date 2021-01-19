@@ -45,9 +45,9 @@ const Menu = ({ dishes, loading, dishErr }) => {
       <div className="row  justify-content-center">
         {dishes.map((dish) => {
           return (
-            <div className="col-12 col-md-3 my-1" key={dish.id}>
+            <div className="col-12 col-md-3 my-1" key={dish._id}>
               <Card>
-                <Link to={`/menu/${dish.id}`}>
+                <Link to={`/menu/${dish._id}`}>
                   <CardImg object src={`${URL}${dish.image}`} alt={dish.name} />
                   <CardImgOverlay>
                     <CardTitle> {dish.name}</CardTitle>

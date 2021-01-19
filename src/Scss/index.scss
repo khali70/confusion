@@ -1,3 +1,9 @@
 @import "./Defalts";
 @import "./_App.scss";
 @import "./_NotFound.scss";
+*,
+*::after,
+*::before {
+  outline: 0px !important;
+  box-shadow: 0px !important;
+}

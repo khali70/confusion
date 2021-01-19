@@ -1,8 +1,9 @@
 import * as action from "./ActionTypes";
 import { URL } from "../../shared/baseURL";
+import { deleteStore } from "../Reducers/Store";
 //Action creators
-
-// dishes
+// const URL = "";
+//$ dishes ---------------------------------------------------------------------------
 export const fetchDishes = (payload) => (dispatch) => {
   dispatch(dishesLoading(true));
 
@@ -41,7 +42,7 @@ export const addDishes = (dishes) => {
     payload: dishes,
   };
 };
-// comments
+//$ comments ---------------------------------------------------------------------------
 export const fetchComments = () => (dispatch) => {
   return fetch(`${URL}comments`)
     .then(
@@ -78,19 +79,18 @@ export const addComment = (comment) => ({
   type: action.ADD_COMMENT,
   payload: comment,
 });
-export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+export const postComment = (dishId, rating, comment) => (dispatch) => {
   const newComment = {
     dishId,
     rating,
-    author,
     comment,
-    date: new Date().toISOString(),
   };
   return fetch(`${URL}comments`, {
     method: "POST",
     body: JSON.stringify(newComment),
     headers: {
       "Content-Type": "application/json",
+      Authorization: getToken(),
     },
     credentials: "same-origin",
   })
@@ -100,7 +100,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
           return response;
         } else {
           let err = new Error(
-            "error" + response.status + " : " + response.statusText
+            "eror" + response.status + " : " + response.statusText
           );
           err.response = response;
           throw err;
@@ -111,13 +111,14 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         throw errMsg;
       }
     )
-    .then((res) => dispatch(addComment(newComment)))
+    .then((response) => response.json())
+    .then((response) => dispatch(addComment(response)))
     .catch((err) => {
       console.log("POST comment");
       console.log(err);
     });
 };
-// promotions
+// $ promotions ---------------------------------------------------------------------------
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading());
 
@@ -157,7 +158,7 @@ export const addPromos = (promos) => ({
   type: action.ADD_PROMOS,
   payload: promos,
 });
-// Leaders
+// $ Leaders ---------------------------------------------------------------------------
 export const fetchLeaders = () => (dispatch) => {
   // dispatch(promosLoading());
 
@@ -196,13 +197,14 @@ export const LeadersFailed = (errmess) => ({
   type: action.LEADERS_FAILED,
   payload: errmess,
 });
-// TODO postFeedback() action at  http://localhost:3001/feedback
+// $ feedback ---------------------------------------------------------------------------
 export const postFeedback = (values) => (dispatch) => {
   return fetch(`${URL}feedback`, {
     method: "POST",
     body: JSON.stringify(values),
     headers: {
       "Content-Type": "application/json",
+      Authorization: getToken(),
     },
     credentials: "same-origin",
   })
@@ -219,16 +221,230 @@ export const postFeedback = (values) => (dispatch) => {
         }
       },
       (err) => {
-        let errMsg = new Error(err.message);
-        throw errMsg;
+        throw err;
       }
     )
-    .then(() => dispatch(getlastfeed()))
-    .catch((err) => {
-      console.log("postFeedback");
-      console.log(err);
+    .then((response) => response.json())
+    .then((response) => {
+      console.log("Feedback", response);
+      alert("Thank you for your feedback :)\n" + JSON.stringify(response));
+    })
+    .catch((error) => {
+      console.log("Feedback", error.message);
+      alert("Your feedback could not be posted\nError: " + error.message);
     });
 };
 export const getlastfeed = () => ({
   type: action.GET_FEED,
 });
+// $ users ---------------------------------------------------------------------------
+
+export const requestLogin = (creds) => {
+  return {
+    type: action.LOGIN_REQUEST,
+    creds,
+  };
+};
+
+export const loginUser = (creds) => (dispatch) => {
+  // We dispatch requestLogin to kickoff the call to the API
+  dispatch(requestLogin(creds));
+
+  return fetch(URL + "users/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: `${URL}`,
+    },
+    body: JSON.stringify(creds),
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.success) {
+        if (creds.rememberMe) {
+          // If login was successful, set the token in local storage
+          localStorage.setItem("creds", JSON.stringify(creds));
+          localStorage.setItem("token", response.token);
+        } else {
+          sessionStorage.setItem("creds", JSON.stringify(creds));
+          sessionStorage.setItem("token", response.token);
+        }
+        // Dispatch the success action
+        dispatch(fetchFavorites());
+        dispatch(receiveLogin(response));
+      } else {
+        var error = new Error("Error " + response.status);
+        error.response = response;
+        throw error;
+      }
+    })
+    .catch((error) => dispatch(loginError(error.message)));
+};
+export const receiveLogin = (response) => {
+  return {
+    type: action.LOGIN_SUCCESS,
+    token: response.token,
+  };
+};
+
+export const loginError = (message) => {
+  return {
+    type: action.LOGIN_FAILURE,
+    message,
+  };
+};
+export const requestLogout = () => {
+  return {
+    type: action.LOGOUT_REQUEST,
+  };
+};
+
+export const receiveLogout = () => {
+  return {
+    type: action.LOGOUT_SUCCESS,
+  };
+};
+
+// Logs the user out
+export const logoutUser = () => (dispatch) => {
+  dispatch(requestLogout());
+  deleteStore("token");
+  deleteStore("creds");
+  deleteStore("favorites");
+  dispatch(favoritesFailed("Error 401: Unauthorized"));
+  dispatch(receiveLogout());
+};
+// $ favorites -----------------------------------------------------------------------
+export const postFavorite = (dishId) => (dispatch) => {
+  return fetch(URL + "favorites/" + dishId, {
+    method: "POST",
+    body: JSON.stringify([dishId]),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((favorites) => {
+      console.log("Favorite Added", favorites);
+      dispatch(addFavorites(favorites));
+    })
+    .catch((error) => console.log(error));
+};
+export const deleteFavorite = (dishId) => (dispatch) => {
+  return fetch(URL + "favorites/" + dishId, {
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+      "Access-Control-Allow-Origin": `${URL}"favorites/${dishId}`,
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((favorites) => {
+      console.log("Favorite Deleted", favorites);
+      dispatch(addFavorites(favorites));
+    })
+    .catch((error) => console.log(error));
+};
+
+export const fetchFavorites = () => (dispatch) => {
+  dispatch(favoritesLoading(true));
+
+  return fetch(URL + "favorites", {
+    headers: {
+      Authorization: getToken(),
+    },
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => response.json())
+    .then((favorites) => dispatch(addFavorites(favorites)))
+    .catch((error) => dispatch(favoritesFailed(error.message)));
+};
+
+export const favoritesLoading = () => ({
+  type: action.FAVORITES_LOADING,
+});
+
+export const favoritesFailed = (errmess) => ({
+  type: action.FAVORITES_FAILED,
+  payload: errmess,
+});
+
+export const addFavorites = (favorites) => ({
+  type: action.ADD_FAVORITES,
+  payload: favorites,
+});
+
+const getToken = () => {
+  if (localStorage.getItem("token")) {
+    return `Bearer ${localStorage.getItem("token")}`;
+  } else {
+    return `Bearer ${sessionStorage.getItem("token")}`;
+  }
+};
