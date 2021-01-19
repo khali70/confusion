@@ -16,14 +16,19 @@ import {
   Label,
   Input,
   InputGroup,
-  InputGroupButtonDropdown,
   InputGroupAddon,
 } from "reactstrap";
+
 import { NavLink } from "react-router-dom";
 import { URL } from "../shared/baseURL";
 import { connect } from "react-redux";
-import { loginUser, logoutUser } from "../Redux/Action/Actions";
 
+import { loginUser, logoutUser } from "../Redux/Action/Actions";
+/**
+ * @param {userData} auth user state
+ * @param {function} login login action creator
+ * @param {function} logoutUser logout action creator
+ */
 function Header({ login, auth, logoutUser }) {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
@@ -35,9 +40,15 @@ function Header({ login, auth, logoutUser }) {
   const [modal, toggleModalState] = useState(() => {
     return { isModalOpen: false };
   });
+  /**
+   * @description at the mobile screen toggle the navbar navigations on or off
+   */
   const toggleNav = () => {
     toggleNavState({ isNavOpen: !state.isNavOpen });
   };
+  /**
+   * @description toggel the modal when user want to login
+   */
   const toggleModal = () => {
     toggleModalState({ isModalOpen: !modal.isModalOpen });
   };
@@ -47,10 +58,13 @@ function Header({ login, auth, logoutUser }) {
     setremmeburMe(false);
     toggleModal();
   };
+  /**
+   * @description run login action creator with { username, password, rememberMe } af user sumbit loging form
+   * @param {HTMLElement} e
+   */
   const handelLogin = (e) => {
     e.preventDefault();
     const creds = { username, password, rememberMe };
-    // alert(JSON.stringify(creds));
     login(creds);
     reset();
   };
@@ -100,6 +114,7 @@ function Header({ login, auth, logoutUser }) {
             </Nav>
             <Nav className="ml-auto" navbar>
               <NavItem>
+                {/* display loging if user not loged in , Logout if user logged in  */}
                 {!auth.isAuthenticated ? (
                   <Button outline onClick={toggleModal}>
                     <span className="fa fa-sign-in fa-lg"></span> Login
@@ -137,6 +152,7 @@ function Header({ login, auth, logoutUser }) {
           </div>
         </div>
       </Jumbotron>
+      {/* login modal */}
       <Modal isOpen={modal.isModalOpen} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Login</ModalHeader>
         <ModalBody>

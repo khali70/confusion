@@ -124,6 +124,7 @@ the `props`
 - [ ] change route animation
 - [ ] add the admin panale add,del,updata dishes get users,add
 - [ ] register user
+- [ ] remeberme
 - [ ] add date to the comments at [DishInfo](src/Components/switch/Menu/DishInfo.js)
 
 ## future work
