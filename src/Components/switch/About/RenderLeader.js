@@ -1,6 +1,10 @@
 import React from "react";
 import { Media } from "reactstrap";
 import { URL } from "../../../shared/baseURL";
+/**
+ * @param {item} LeaderInfo
+ * @returns  leader info in media card
+ */
 function RenderLeader({ image, name, designation, description }) {
   return (
     <Media tag="li">

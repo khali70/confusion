@@ -7,8 +7,11 @@ import {
   CardHeader,
   Media,
 } from "reactstrap";
+
 import { Link } from "react-router-dom";
+
 import { Stagger, Fade } from "react-animation-components";
+
 import RenderLeader from "./RenderLeader";
 
 const About = ({ leaders, leadersErr }) => {
