@@ -8,20 +8,57 @@ import {
   Col,
   Row,
 } from "reactstrap";
+
 import { Control, Errors, Form } from "react-redux-form";
+
 import { Link } from "react-router-dom";
+
+// validator
+
+/**
+ * @description
+ * true for non empty value
+ * @param {String} val input value
+ */
 const required = (val) => val && val.length;
-const MaxLength = (len) => (val) => !val || val.length <= len;
-const MinLength = (len) => (val) => val && val.length >= len;
+
+/**
+ * @description
+ * true if the length < maxlen
+ * @param {number} maxlen the max lenght
+ */
+const MaxLength = (maxlen) => (val) => !val || val.length <= maxlen;
+
+/**
+ * @description
+ * true if the length > minlen
+ * @param {number} minlen the max lenght
+ */
+const MinLength = (minlen) => (val) => val && val.length >= minlen;
+
+/**
+ * @returns true if `val` is number
+ * @param {any} val the max lenght
+ */
 const isNumber = (val) => !isNaN(Number(val));
+
+/**
+ * @returns true if string is mail
+ * @param {string} val the max lenght
+ */
 const validEmail = (val) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+
+/**
+ * @returns conact page <br>
+ * - info,google map
+ * - react redux form
+ */
 const Contact = ({ resetFeedForm, postFeedback, isAuthenticated }) => {
   const handleSubmit = (values) => {
-    // alert the data fro db
+    // alert the data for db
     if (isAuthenticated) {
       postFeedback(values);
-      // alert(JSON.stringify(values));
     } else {
       alert("you must be Authenticated to give a feedback");
     }
