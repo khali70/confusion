@@ -1,11 +1,15 @@
 import React from "react";
 import { Media, Breadcrumb, BreadcrumbItem, Button } from "reactstrap";
 import { Link } from "react-router-dom";
-import Loading from "./Lodaing";
-import { URL } from "../../shared/baseURL";
 import { connect } from "react-redux";
-import { deleteFavorite } from "../../Redux/Action/Actions";
 
+import { deleteFavorite } from "../../Redux/Action/Actions";
+import { URL } from "../../shared/baseURL";
+import Loading from "./Lodaing";
+
+/**
+ * @returns dish as media card
+ */
 function RenderMenuItem({ dish, deleteFavorite }) {
   return (
     <Media tag="li">
@@ -23,6 +27,9 @@ function RenderMenuItem({ dish, deleteFavorite }) {
   );
 }
 
+/**
+ * return the favorties dishes of the user
+ */
 const Favorites = ({ isLoading, errMess, dishes, deleteFavorite }) => {
   if (isLoading) {
     return (
