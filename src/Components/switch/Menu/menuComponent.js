@@ -7,9 +7,14 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
+
+import { Link } from "react-router-dom";
+
 import Loading from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
-import { Link } from "react-router-dom";
+/**
+ * menu dishes `onClick` dish => route to this dish info at ./Dishinfo.js
+ */
 const Menu = ({ dishes, loading, dishErr }) => {
   if (loading) {
     return (
@@ -61,4 +66,5 @@ const Menu = ({ dishes, loading, dishErr }) => {
     </div>
   );
 };
+
 export default Menu;

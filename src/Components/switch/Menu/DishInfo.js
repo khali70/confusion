@@ -10,14 +10,23 @@ import {
   CardImgOverlay,
   Button,
 } from "reactstrap";
+
 import { FadeTransform, Fade, Stagger } from "react-animation-components";
+
 import { Link } from "react-router-dom";
+
 import { connect } from "react-redux";
-import DishdetailComponent from "./DishdetailComponent";
 import { postComment, postFavorite } from "../../../Redux/Action/Actions";
+
+import AddCommentBtn from "./addCommentBtn";
 import Lodaing from "../Lodaing";
 import { URL } from "../../../shared/baseURL";
 
+/**
+ * the coloms
+ * - dish img ,dish discription
+ * - comments at this dish
+ */
 class DishInfo extends Component {
   render() {
     let {
@@ -132,7 +141,7 @@ class DishInfo extends Component {
                     </Fade>
                   ))}
                 </Stagger>
-                <DishdetailComponent
+                <AddCommentBtn
                   addComment={this.props.addComment}
                   dishId={dish._id}
                 />

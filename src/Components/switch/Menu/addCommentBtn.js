@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Button,
   Modal,
@@ -8,19 +9,29 @@ import {
   Col,
   Row,
 } from "reactstrap";
+
 import { LocalForm, Control, Errors } from "react-redux-form";
 
 const required = (val) => val && val.length;
-// const MaxLength = (len) => (val) => !val || val.length <= len;
-// const MinLength = (len) => (val) => val && val.length >= len;
-
-function DishdetailComponent({ addComment, dishId }) {
+/**
+ * @onSubmit react add comment form with
+ * - rating
+ * - commentO
+ * - dishId
+ */
+function AddCommentBtn({ addComment, dishId }) {
   const [modal, toggleModalState] = useState(() => {
     return { isModalOpen: false };
   });
+  /**
+   * toggle the module visiablitey
+   */
   const toggleModal = () => {
     toggleModalState({ isModalOpen: !modal.isModalOpen });
   };
+  /**
+   * the submit fuction for the modul
+   */
   const handleSubmit = (values) => {
     addComment(dishId, values.rating, values.comment);
     toggleModal();
@@ -98,4 +109,4 @@ function DishdetailComponent({ addComment, dishId }) {
   );
 }
 
-export default DishdetailComponent;
+export default AddCommentBtn;
