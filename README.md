@@ -1,28 +1,43 @@
-# tabel content <!-- omit in toc -->
+# Tabel of Content <!-- omit in toc -->
 
+- [Preview](#preview)
+- [How to build](#how-to-build)
+  - [biuld sripts](#biuld-sripts)
 - [Available Scripts](#available-scripts)
     - [`yarn start`](#yarn-start)
-    - [`yarn test`](#yarn-test)
-  - [App Structure](#app-structure)
-- [fixed Copmonent](#fixed-copmonent)
-  - [Header](#header)
-  - [Footer](#footer)
-- [Dynamic Component](#dynamic-component)
-  - [Home](#home)
-  - [Menu](#menu)
-    - [menuComponent<br>](#menucomponent)
-    - [Dish Info](#dish-info)
-    - [Dish Details](#dish-details)
-  - [Favorites](#favorites)
 - [todo's](#todos)
   - [bugs](#bugs)
   - [future work](#future-work)
 
 ---
 
-# Available Scripts
+# Preview
 
-untill now there's now scripts yet.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gScUbiTkdR8?start=92" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+# How to build
+
+first you need
+
+- [node](https://nodejs.org/en/) installed
+- [yarn](https://classic.yarnpkg.com/en/) insatlled
+- you have the [server repo](https://github.com/khali70/learning-node)
+- your `mongoDB key` the DB for the server
+
+## biuld sripts
+
+inside the [server](https://github.com/khali70/learning-node) folder run `yarn run dev`
+
+update the clinet dir in the [server folder](https://github.com/khali70/learning-node) package.json file
+
+the client script
+
+```diff
+- cd ../../client/ && yarn start
++ cd ${the client folder dir} && yarn install && yarn start
+```
+
+# Available Scripts
 
 ### `yarn start`
 
@@ -32,91 +47,19 @@ Open [http://localhost:1250](http://localhost:1250) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
-
-in this app there is no test script
-
-## App Structure
-
-this app consit of main Componet which is `App.js` this main Componet us `React-Router` to route to other screen[home - menu - contact - favorites - aboutus]
-there is fixed component [navbar - footer]<br>
-`props` from `Redux`
-
-- `fetchComments()`
-- `fetchDishes()`
-- `fetchPromos()`
-- `fetchLeaders()`
-- resetFeedForm()
-- dishes
-- loading
-- dishErr
-- comments
-- commentsErr
-- promotions
-- promoErr
-- leaders
-- leadersErr
-- favorites
-  - dishes []
-  - userid
-
-# fixed Copmonent
-
-## Header
-
-the Header consist of hearder and navbar
-
-> ### Navbar
->
-> have the links for `navigation` to the other screens<br>
-> have the `login button`
->
-> ### Jumbotron
->
-> the header for the app with `no funtionality`
-
-## Footer
-
-consist of 1st row > 4 col[ 3 - 5 - 4 ]<br>
-the `1st col is for nav`
-
-# Dynamic Component
-
-## Home
-
-in this component the `featured` dishes , chiffes displayed
-
-## Menu
-
-### menuComponent<br>
-
-at `/menu` the `menucomponent` map the dishes which pass to it throw the `app.js`
-
-### Dish Info
-
-- at `/menu/:dishid` the `DishInfo` render the dish get the dish form `app.js` as the `ID` at match.params.dishId
-- map the comment that it get form the `app.js` and render the `DishDetails.js`
-
-### Dish Details
-
-TODO: chang the name to `AddNewComment.js`
-in this compont display btn `submit Comment` onClick open a comment modal with to feilds.<br>
-
-```
-rating , comment
-```
-
-`props`
-
-- addcomment() from dishinfo from `redux`
-- dishId form dishinfo
-
-## Favorites
-
-only the sigened in user can loging this page the favorites reducer fitch the state form local on reload
-the `props`
-
 # todo's
+
+- [ ] doc redux actions
+- [ ] doc redux reducers
+  - [ ] auth
+  - [ ] comment
+  - [ ] dishes
+  - [ ] favorites
+  - [ ] feedback
+  - [ ] leadres
+  - [ ] promotions
+  - [ ] store
+  - [ ] form
 
 ## bugs
 
@@ -125,9 +68,9 @@ the `props`
 - [ ] add the admin panale add,del,updata dishes get users,add
 - [ ] register user
 - [ ] remeberme
-- [ ] add date to the comments at [DishInfo](src/Components/switch/Menu/DishInfo.js)
+- [ ] add date to the comments at [addCommentBtn](src/Components/switch/Menu/addCommentBtn.js)
 
 ## future work
 
-- [ ] chang the name to `AddNewComment.js`
+- [x] chang the name to `addCommentBtn.js`
 - [ ] add the Oauth with facebook
