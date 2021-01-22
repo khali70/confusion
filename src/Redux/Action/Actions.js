@@ -368,6 +368,7 @@ export const loginError = (message) => {
     message,
   };
 };
+
 export const requestLogout = () => {
   return {
     type: action.LOGOUT_REQUEST,
@@ -390,6 +391,9 @@ export const logoutUser = () => (dispatch) => {
   dispatch(receiveLogout());
 };
 // $ favorites -----------------------------------------------------------------------
+/**
+ * add favorites dish to the db
+ */
 export const postFavorite = (dishId) => (dispatch) => {
   return fetch(URL + "favorites/" + dishId, {
     method: "POST",
@@ -423,6 +427,9 @@ export const postFavorite = (dishId) => (dispatch) => {
     })
     .catch((error) => console.log(error));
 };
+/**
+ * take dishid and delet it from the favorites db of the user
+ */
 export const deleteFavorite = (dishId) => (dispatch) => {
   return fetch(URL + "favorites/" + dishId, {
     method: "DELETE",
