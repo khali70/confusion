@@ -1,8 +1,9 @@
 import * as ActionTypes from "../Action/ActionTypes";
 import { getStore } from "./Store";
+
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
-// we would also want a util to check if the token is expired.
+// TODO util to check if the token is expired.
 
 export const Auth = (
   state = {
@@ -16,6 +17,8 @@ export const Auth = (
 ) => {
   switch (action.type) {
     case ActionTypes.LOGIN_REQUEST:
+      // trigger lodaing state
+      // add user cred to the store
       return {
         ...state,
         isLoading: true,
@@ -23,6 +26,8 @@ export const Auth = (
         user: action.creds,
       };
     case ActionTypes.LOGIN_SUCCESS:
+      // stop loading
+      // add token to store
       return {
         ...state,
         isLoading: false,
@@ -31,6 +36,7 @@ export const Auth = (
         token: action.token,
       };
     case ActionTypes.LOGIN_FAILURE:
+      // add error to state
       return {
         ...state,
         isLoading: false,
@@ -38,8 +44,10 @@ export const Auth = (
         errMess: action.message,
       };
     case ActionTypes.LOGOUT_REQUEST:
+      // DOC why is auth true
       return { ...state, isLoading: true, isAuthenticated: true };
     case ActionTypes.LOGOUT_SUCCESS:
+      // reset the state
       return {
         ...state,
         isLoading: false,

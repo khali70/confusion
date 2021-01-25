@@ -381,7 +381,9 @@ export const receiveLogout = () => {
   };
 };
 
-// Logs the user out
+/**
+ * log user out and delete stored data about user
+ */
 export const logoutUser = () => (dispatch) => {
   dispatch(requestLogout());
   deleteStore("token");
@@ -462,7 +464,9 @@ export const deleteFavorite = (dishId) => (dispatch) => {
     })
     .catch((error) => console.log(error));
 };
-
+/**
+ * fetch favorites dish from the server
+ */
 export const fetchFavorites = () => (dispatch) => {
   dispatch(favoritesLoading(true));
 
@@ -507,6 +511,9 @@ export const addFavorites = (favorites) => ({
   payload: favorites,
 });
 
+/**
+ * get the token from the storge
+ */
 const getToken = () => {
   if (localStorage.getItem("token")) {
     return `Bearer ${localStorage.getItem("token")}`;
