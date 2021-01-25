@@ -1,3 +1,8 @@
+/**
+ * get data from the storge using key `name`
+ * @storge localStorage|| sessionStorage
+ * @param {string} name the key
+ */
 export const getStore = (name) => {
   if (localStorage.getItem(name)) {
     return localStorage.getItem(name);
@@ -5,6 +10,12 @@ export const getStore = (name) => {
     return sessionStorage.getItem(name);
   }
 };
+/**
+ * add data to the storge with key `name`
+ * @storge localStorage|| sessionStorage
+ * @param {string} name the key
+ * @param {string} value the value as string
+ */
 export const setStore = (name, value) => {
   if (localStorage.getItem("token")) {
     return localStorage.setItem(name, value);
@@ -12,6 +23,11 @@ export const setStore = (name, value) => {
     return sessionStorage.setItem(name, value);
   }
 };
+/**
+ * delete data from the storge with key `name`
+ * @storge localStorage|| sessionStorage
+ * @param {string} name the key
+ */
 export const deleteStore = (name) => {
   if (localStorage.getItem("token")) {
     return localStorage.removeItem(name);
