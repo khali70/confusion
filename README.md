@@ -49,26 +49,29 @@ You will also see any lint errors in the console.
 
 # todo's
 
-- [ ] doc redux actions
-- [ ] doc redux reducers
-  - [ ] auth
-  - [ ] comment
-  - [ ] dishes
-  - [ ] favorites
-  - [ ] feedback
-  - [ ] leadres
-  - [ ] promotions
-  - [ ] store
-  - [ ] form
+- [x] doc redux actions
+- [x] doc redux reducers
+  - [x] auth
+  - [x] comment
+  - [x] dishes
+  - [x] favorites
+  - [x] feedback
+  - [x] leadres
+  - [x] promotions
+  - [x] store
+  - [x] form
+- [ ] why use concat at [comments](./src/Redux/Reducers/comments.js)
+- [ ] update all log to work on dev only
 
 ## bugs
 
+- [ ] remeberme
+- [ ] register new user
 - [ ] refresh the token
 - [ ] change route animation
 - [ ] add the admin panale add,del,updata dishes get users,add
-- [ ] register user
-- [ ] remeberme
 - [ ] add date to the comments at [addCommentBtn](src/Components/switch/Menu/addCommentBtn.js)
+- [ ] `isAuthenticated: true` at [comment](./src/Redux/Reducers/auth.js) reducer
 
 ## future work
 
