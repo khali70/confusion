@@ -6,6 +6,7 @@ const initState = { err: null, feed: [] };
 export const FeedBack = (state = initState, { type }) => {
   switch (type) {
     case action.GET_FEED:
+      // fetch feedback
       let responce;
       fetch(`${URL}feedback`)
         .then(
@@ -26,11 +27,11 @@ export const FeedBack = (state = initState, { type }) => {
           }
         )
         .then((res) => {
-          console.log(res);
           return res.json(res);
         })
-        .catch((err) => alert(err));
-      console.log(responce);
+        .catch((err) => console.log(err));
+      //PIN console.log(responce);
+      // add response from server to feed
       return { ...state, feed: [...responce] };
     default:
       return state;
