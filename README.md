@@ -13,7 +13,7 @@
 
 # Preview
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gScUbiTkdR8?start=92" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[to preview the website click here](https://www.youtube.com/embed/gScUbiTkdR8?start=92)
 
 # How to build
 
@@ -72,6 +72,7 @@ You will also see any lint errors in the console.
 - [ ] add the admin panale add,del,updata dishes get users,add
 - [ ] add date to the comments at [addCommentBtn](src/Components/switch/Menu/addCommentBtn.js)
 - [ ] `isAuthenticated: true` at [comment](./src/Redux/Reducers/auth.js) reducer
+- [x] when reload at /home the server return error => don't add client to server side 
 
 ## future work
 
